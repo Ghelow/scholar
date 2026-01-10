@@ -14,7 +14,7 @@ if (!isset($_SESSION['auth_user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Menu 2</title>
+    <title>Iskolar Nang Luis - EDUCATIONAL ASSISTANCE</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 

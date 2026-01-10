@@ -13,7 +13,9 @@ if (file_exists($autoload)) {
     require_once $autoload;
 }
 if (!empty($_SESSION['auth_user_id']) && auth_role() === 'student') {
-    header('Location: ' . route_url('students/home'));
+    $userId = (int) $_SESSION['auth_user_id'];
+    $target = student_profile_completed($conn, $userId) ? route_url('students/home') : route_url('students/profile-setup');
+    header('Location: ' . $target);
     exit;
 }
 // Allow exiting OTP mode when user clicks Back
@@ -290,6 +292,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const signUpBackBtn = document.querySelector('#signup-otp-back');
             let otpMode = <?php echo $otpMode ? 'true' : 'false'; ?>;
             let signupOtpMode = <?php echo $regOtpMode ? 'true' : 'false'; ?>;
+            const containerEl = document.getElementById('container');
+            if (containerEl) {
+                if (signupOtpMode) {
+                    containerEl.classList.add('active');
+                } else if (otpMode) {
+                    containerEl.classList.remove('active');
+                } else if (window.__messages && window.__messages.errors && typeof window.__messages.errors === 'object') {
+                    const keys = Object.keys(window.__messages.errors);
+                    const hasSignupError = keys.some(k => typeof k === 'string' && k.indexOf('signup-') === 0);
+                    if (hasSignupError) {
+                        containerEl.classList.add('active');
+                    }
+                }
+            }
 
             function enterOtpMode() {
                 otpMode = true;
