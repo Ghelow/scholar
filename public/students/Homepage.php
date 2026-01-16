@@ -1,5 +1,14 @@
+<?php
+require_once __DIR__ . '/../../config/bootstrap.php';
+require_once __DIR__ . '/../../src/security.php';
+secure_session_start();
+require_once __DIR__ . '/../../src/db.php';
+
+enforce_student_profile_completed($conn);
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +23,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         :root {
             --primary: #1e88e5;
             --primary-dark: #293D82;
@@ -27,8 +36,9 @@
             --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
-        
-        html, body {
+
+        html,
+        body {
             width: 100%;
             overflow-x: hidden;
             scroll-behavior: smooth;
@@ -40,7 +50,7 @@
             color: var(--dark);
             background-color: var(--light);
         }
-        
+
         .container {
             width: calc(100% - 0px);
             max-width: 1200px;
@@ -48,35 +58,32 @@
             padding: 0 20px;
             box-sizing: border-box;
         }
-        
-        
-        
 
         .hero {
-            background: linear-gradient(#1e88e59d, #293c82ce), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'), url('img/sanluis.jpg');
+            background: linear-gradient(#1e88e59d,rgba(25, 38, 85, 0.92)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'), url('img/sanluis.jpg');
             background-size: cover;
             background-position: center;
             color: white;
             text-align: center;
             padding: 100px 0;
             margin-bottom: 60px;
-
+            margin-top: 90px;
         }
-        
+
         .hero h2 {
             font-family: 'Montserrat', sans-serif;
             font-size: 3.5rem;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
-        
+
         .hero p {
             font-size: 1.3rem;
             max-width: 800px;
             margin: 0 auto 40px;
             opacity: 0.9;
         }
-        
+
         .hero-btn {
             background-color: #ffeb3b;
             color: var(--dark);
@@ -92,13 +99,13 @@
             gap: 15px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
-        
+
         .hero-btn:hover {
             background-color: #ffd740;
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
         }
-        
+
         /* Announcement Section - Matching vaccination card style - NOW 90% WIDTH */
         .announcement {
             background-color: white;
@@ -110,7 +117,7 @@
             width: 90%;
             max-width: 1200px;
         }
-        
+
         .section-title {
             font-family: 'Montserrat', sans-serif;
             color: var(--primary-dark);
@@ -119,7 +126,7 @@
             position: relative;
             padding-bottom: 15px;
         }
-        
+
         .section-title:after {
             content: '';
             position: absolute;
@@ -129,14 +136,14 @@
             height: 4px;
             background-color: var(--primary);
         }
-        
+
         .announcement-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
             margin-top: 30px;
         }
-        
+
         .announcement-card {
             background-color: white;
             border-radius: 10px;
@@ -145,12 +152,12 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
             border-left: 5px solid var(--primary);
         }
-        
+
         .announcement-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
-        
+
         .announcement-card h3 {
             color: var(--primary-dark);
             font-size: 1.5rem;
@@ -159,11 +166,11 @@
             align-items: center;
             gap: 10px;
         }
-        
+
         .announcement-card h3 i {
             color: var(--primary);
         }
-        
+
         .highlight-box {
             background-color: #e8f5e9;
             border-radius: 10px;
@@ -171,25 +178,25 @@
             margin-top: 25px;
             border-left: 5px solid var(--secondary);
         }
-        
+
         .highlight-box p {
             font-style: italic;
             color: var(--dark);
             font-size: 1.1rem;
         }
-        
+
         /* Program Info Section - Matching vaccination details style */
         .program-info {
             margin-bottom: 60px;
         }
-        
+
         .program-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             margin-top: 30px;
         }
-        
+
         .program-card {
             background-color: white;
             border-radius: 15px;
@@ -198,45 +205,45 @@
             transition: var(--transition);
             border-top: 8px solid var(--primary-d);
         }
-        
+
         .program-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
         }
-        
+
         .card-header {
             background-color: var(--primary);
             color: white;
             padding: 25px;
             text-align: center;
         }
-        
+
         .card-header i {
             font-size: 2.5rem;
             margin-bottom: 15px;
             display: block;
         }
-        
+
         .card-body {
             padding: 25px;
         }
-        
+
         .card-body ul {
             list-style-type: none;
         }
-        
+
         .card-body li {
             margin-bottom: 12px;
             display: flex;
             align-items: flex-start;
             gap: 10px;
         }
-        
+
         .card-body li i {
             color: var(--secondary);
             margin-top: 5px;
         }
-        
+
         /* Schedule Update Section - Matching vaccination location style */
         .schedule-update {
 
@@ -250,8 +257,8 @@
             width: 90%;
             max-width: 1200px;
         }
-        
-        
+
+
         .schedule-box {
             background-color: white;
             border-radius: 10px;
@@ -261,13 +268,13 @@
             box-sizing: border-box;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
         }
-        
+
         .schedule-box p {
             font-size: 1.2rem;
             line-height: 1.8;
             color: #555;
         }
-        
+
         .important-note {
             background-color: #fff8e1;
             border-radius: 10px;
@@ -275,7 +282,7 @@
             margin-top: 25px;
             border-left: 5px solid var(--accent);
         }
-        
+
         .important-note h4 {
             color: var(--accent);
             margin-bottom: 10px;
@@ -283,37 +290,38 @@
             align-items: center;
             gap: 10px;
         }
-        
-        /* CTA Section - Matching vaccination tagline style */
+
+        /* CTA Section - Hero-like background boxed */
         .cta-section {
-            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            background: linear-gradient(#1e88e59d,rgba(25, 38, 85, 0.92)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'), url('img/sanluis.jpg');
+            background-size: cover;
+            background-position: center;
             color: white;
             text-align: center;
-            padding: 80px 0;
+            padding: 100px 0;   
             margin: 0 auto;
             border-radius: 15px;
             margin-bottom: 60px;
             box-shadow: var(--shadow);
             width: 90%;
             max-width: 1200px;
-
         }
-        
+
         .cta-section h2 {
             font-family: 'Montserrat', sans-serif;
             font-size: 3rem;
             margin-bottom: 20px;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
         }
-        
+
         .cta-section p {
             font-size: 1.3rem;
             max-width: 800px;
             margin: 0 auto 40px;
             opacity: 0.9;
         }
-        
-        
+
+
         /* Detail Items - Matching vaccination detail items */
         .detail-items {
             display: grid;
@@ -321,7 +329,7 @@
             gap: 20px;
             margin-top: 30px;
         }
-        
+
         .detail-item {
             display: flex;
             align-items: center;
@@ -330,7 +338,7 @@
             border-radius: 10px;
             border-top: 8px solid var(--secondary);
         }
-        
+
         .detail-icon {
             background-color: #e3f2fd;
             color: var(--primary);
@@ -385,8 +393,9 @@
         }
     </style>
 </head>
+
 <body>
-<?php include 'includes/navbar.php'; ?>
+    <?php include 'includes/navbar.php'; ?>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -422,7 +431,7 @@
     <section id="requirements" class="program-info">
         <div class="container">
             <h2 class="section-title">SCHOLARSHIP PROGRAM DETAILS</h2>
-            
+
             <div class="detail-items">
                 <div class="detail-item fade-in">
                     <div class="detail-icon">
@@ -433,7 +442,7 @@
                         <p>Residents of Luis municipality, currently enrolled students with satisfactory academic standing and demonstrated financial need.</p>
                     </div>
                 </div>
-                
+
                 <div class="detail-item fade-in delay-1">
                     <div class="detail-icon">
                         <i class="fas fa-award"></i>
@@ -443,7 +452,7 @@
                         <p>Tuition assistance, monthly stipend, book allowance, transportation support, and mentorship programs.</p>
                     </div>
                 </div>
-                
+
                 <div class="detail-item fade-in delay-2">
                     <div class="detail-icon">
                         <i class="fas fa-file-alt"></i>
@@ -454,7 +463,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="program-cards">
                 <div class="program-card fade-in">
                     <div class="card-header">
@@ -471,7 +480,7 @@
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="program-card fade-in delay-1">
                     <div class="card-header">
                         <i class="fas fa-award"></i>
@@ -487,7 +496,7 @@
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="program-card fade-in delay-2">
                     <div class="card-header">
                         <i class="fas fa-file-alt"></i>
@@ -512,13 +521,13 @@
             <h2 class="section-title">NEW SCHEDULE UPDATES</h2>
             <div class="schedule-box">
                 <p><strong>PAUMANHIN PO SA MAGKAKAROON NG PAG BABAGO SA SHEDULE NG DISTRIBUTION OF EDUCATIONAL ASSISTANCE UPANG BIGYAN NG DAAN ANG PAYOUT PARA SA ATING MGA MAHAL NA SENIOR CITIZENS.</strong></p>
-                
-                
+
+
                 <div class="important-note">
                     <h4><i class="fas fa-exclamation-circle"></i> Important Notice</h4>
                     <p>Due to recent adjustments in our processing system, we have updated the distribution schedule for educational assistance. All applicants will be notified of their specific schedule via email and SMS. Please ensure your contact information is up to date in your application.</p>
                 </div>
-                
+
                 <div class="detail-items" style="margin-top: 30px;">
                     <div class="detail-item">
                         <div class="detail-icon">
@@ -529,7 +538,7 @@
                             <p>April 15, 2023 - All applications must be submitted by this date</p>
                         </div>
                     </div>
-                    
+
                     <div class="detail-item">
                         <div class="detail-icon">
                             <i class="fas fa-clock"></i>
@@ -554,23 +563,23 @@
             </button>
         </div>
     </section>
-       
-        <section id="mission-vision" class="mission-vision">
-            <div class="container">
-                <h2 class="section-title">MISSION & VISION</h2>
-                <div class="mv-grid">
-                    <div class="mv-card">
-                        <h3>Mission</h3>
-                        <p>To improve the quality of life of the citizenry through efficient and effective delivery of basic services, strengthening people’s organization and improvement of revenue and investments towards a safe and progressive community.</p>
-                    </div>
 
-                    <div class="mv-card">
-                        <h3>Vision</h3>
-                        <p>An agricultural community in a competitive economy with God-loving, resilient, and empowered citizenry living in a peaceful and healthy environment under a competent leadership.</p>
-                    </div>
+    <section id="mission-vision" class="mission-vision">
+        <div class="container">
+            <h2 class="section-title">MISSION & VISION</h2>
+            <div class="mv-grid">
+                <div class="mv-card">
+                    <h3>Mission</h3>
+                    <p>To improve the quality of life of the citizenry through efficient and effective delivery of basic services, strengthening people’s organization and improvement of revenue and investments towards a safe and progressive community.</p>
+                </div>
+
+                <div class="mv-card">
+                    <h3>Vision</h3>
+                    <p>An agricultural community in a competitive economy with God-loving, resilient, and empowered citizenry living in a peaceful and healthy environment under a competent leadership.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
 
     <?php include 'includes/footer.php'; ?>
