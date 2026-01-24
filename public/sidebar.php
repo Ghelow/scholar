@@ -12,7 +12,7 @@ function is_active_link(string $pattern, string $uri): bool
     <div class="flex h-full flex-col">
         <div class="px-4 py-4 border-b">
             <div class="flex items-center gap-3">
-                <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#1e88e5] text-white">■</span>
+                <img src="<?= htmlspecialchars(asset_url('images/logo.png'), ENT_QUOTES, 'UTF-8'); ?>" alt="Scholar logo" class="h-8 w-8 rounded-lg object-contain" />
                 <div>
                     <div class="text-base font-semibold">Scholar</div>
                     <div class="text-xs text-gray-500">San Luis</div>
