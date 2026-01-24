@@ -240,6 +240,15 @@ $routes->add('students/process-application', new Route(
     [],
     ['POST']
 ));
+$routes->add('students/logout', new Route(
+    '/students/logout',
+    ['_script' => __DIR__ . '/../public/students/logout.php'],
+    [],
+    [],
+    '',
+    [],
+    ['POST']
+));
 $routes->add('verify_otp', new Route(
     '/verify-otp',
     ['_script' => __DIR__ . '/../public/verify_otp.php'],
