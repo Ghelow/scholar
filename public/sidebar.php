@@ -79,7 +79,7 @@ function is_active_link(string $pattern, string $uri): bool
                             <path d="M9 15l6-6" />
                             <path d="M13 9h4v4" />
                         </svg>
-                        <span>Menu 5</span>
+                        <span>Announcements</span>
                     </a>
                 </li>
                 <li>

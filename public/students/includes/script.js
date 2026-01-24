@@ -34,18 +34,26 @@ document.addEventListener('DOMContentLoaded', function () {
         requestAnimationFrame(animateScroll);
     }
 
-    // Smooth scroll for nav links
+    // Smooth scroll for nav links (only when link points to an element on THIS page)
     document.querySelectorAll('.scroll-link').forEach(link => {
         link.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').replace('#', '');
-            const target = document.getElementById(targetId);
+            const href = this.getAttribute('href') || '';
+            const hashIndex = href.indexOf('#');
+            if (hashIndex === -1) {
+                // No hash, allow normal navigation (e.g., external link or full URL)
+                return;
+            }
+            const hash = href.slice(hashIndex + 1);
+            if (!hash) return;
+            const target = document.getElementById(hash);
             if (target) {
+                e.preventDefault();
                 // Offset for fixed header (80px)
                 const headerOffset = 80;
                 const targetY = target.getBoundingClientRect().top + window.scrollY - headerOffset;
                 smoothScrollTo(targetY, 1000);
             }
+            // If target not present, allow the browser to navigate (e.g., go to /students/home#anchor)
         });
     });
 
@@ -53,8 +61,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const homeBtn = document.getElementById('homeBtn');
     if (homeBtn) {
         homeBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            smoothScrollTo(0, 1000);
+            const href = this.getAttribute('href') || '';
+            if (href.startsWith('#')) {
+                e.preventDefault();
+                smoothScrollTo(0, 1000);
+            }
+            // otherwise allow normal navigation (e.g., when href points to students/home)
         });
     }
 
@@ -160,6 +172,71 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // History modal functionality (opens a modal populated with application history)
+    const historyLink = document.getElementById('History');
+    if (historyLink) {
+        historyLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            let modal = document.getElementById('historyModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'historyModal';
+                modal.className = 'modal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center;">
+                            <h2>Application History</h2>
+                            <button class="close-btn" id="historyCloseBtn">&times;</button>
+                        </div>
+                        <div id="historyList"></div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+
+                // close when clicking outside content
+                modal.addEventListener('click', function (ev) {
+                    if (ev.target === modal) closeHistoryModal();
+                });
+
+                // close button handler
+                modal.querySelector('#historyCloseBtn').addEventListener('click', closeHistoryModal);
+            }
+            populateHistory();
+            modal.classList.add('active');
+        });
+    }
+
+    function closeHistoryModal() {
+        const modal = document.getElementById('historyModal');
+        if (modal) modal.classList.remove('active');
+    }
+
+    function populateHistory() {
+        const historyList = document.getElementById('historyList');
+        if (!historyList) return;
+
+        // Sample data; replace with an AJAX call to the server if you have real data
+        const historyData = window._sampleHistoryData || [
+            { date: 'June 3, 2025', name: 'Dela Cruz, Juan Cruz', status: 'Completed', level: '1st Year - 1st Semester' },
+            { date: 'October 15, 2025', name: 'Dela Cruz, Juan Cruz', status: 'Completed', level: '1st Year - 2nd Semester' },
+            { date: 'June 20, 2026', name: 'Dela Cruz, Juan Cruz', status: 'Completed', level: '2nd Year - 1st Semester' }
+        ];
+
+        if (historyData.length === 0) {
+            historyList.innerHTML = '<div class="no-history" style="text-align:center;color:#999;padding:40px 20px;">No submitted forms yet.</div>';
+        } else {
+            historyList.innerHTML = historyData.map(item => `
+                <div class="history-item" style="background:#f9f9f9;padding:15px;border-radius:8px;margin-bottom:12px;border-left:4px solid #667eea;display:flex;justify-content:space-between;align-items:flex-start;">
+                    <div>
+                        <div class="history-item-date" style="color:#667eea;font-weight:600;font-size:.9rem;margin-bottom:8px;"><i class="fas fa-calendar-alt"></i> ${item.date}</div>
+                        <div class="history-item-name" style="font-weight:600;color:#333;margin-bottom:6px;">${item.name}</div>
+                        <div class="history-item-details" style="color:#666;font-size:.9rem;margin-top:8px;line-height:1.5;"><strong>Academic Level:</strong> ${item.level}</div>
+                    </div>
+                    <div class="history-item-status" style="background:#e8f5e9;color:#2e7d32;padding:4px 8px;border-radius:4px;font-size:.85rem;white-space:nowrap;margin-left:12px;"><i class="fas fa-check-circle"></i> ${item.status}</div>
+                </div>
+            `).join('');
+        }
+    }
 
 });
 
