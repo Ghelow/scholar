@@ -4,8 +4,6 @@ require_once __DIR__ . '/../../src/security.php';
 secure_session_start();
 require_once __DIR__ . '/../../src/db.php';
 
-enforce_student_profile_completed($conn);
-
 // Fetch announcements from database
 $announcements = [];
 try {

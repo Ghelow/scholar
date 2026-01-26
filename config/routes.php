@@ -10,6 +10,24 @@ $routes = new RouteCollection();
 // Public pages
 $routes->add('home', new Route(
     '/',
+    ['_script' => __DIR__ . '/../public/students/index.php'],
+    [],
+    [],
+    '',
+    [],
+    ['GET', 'POST']
+));
+$routes->add('admin', new Route(
+    '/admin',
+    ['_script' => __DIR__ . '/../public/login_page.php'],
+    [],
+    [],
+    '',
+    [],
+    ['GET', 'POST']
+));
+$routes->add('admin_slash', new Route(
+    '/admin/',
     ['_script' => __DIR__ . '/../public/login_page.php'],
     [],
     [],
@@ -45,8 +63,26 @@ $routes->add('account_manager', new Route(
     [],
     ['GET', 'POST']
 ));
+$routes->add('admin/account_manager', new Route(
+    '/admin/account/manager',
+    ['_script' => __DIR__ . '/../public/account_manager.php'],
+    [],
+    [],
+    '',
+    [],
+    ['GET', 'POST']
+));
 $routes->add('account_manager_action', new Route(
     '/account/manager/action',
+    ['_script' => __DIR__ . '/../public/account_manager_actions.php'],
+    [],
+    [],
+    '',
+    [],
+    ['POST']
+));
+$routes->add('admin/account_manager_action', new Route(
+    '/admin/account/manager/action',
     ['_script' => __DIR__ . '/../public/account_manager_actions.php'],
     [],
     [],
@@ -63,8 +99,26 @@ $routes->add('menu_1', new Route(
     [],
     ['GET']
 ));
+$routes->add('admin/menu_1', new Route(
+    '/admin/menu-1',
+    ['_script' => __DIR__ . '/../public/menu_1.php'],
+    [],
+    [],
+    '',
+    [],
+    ['GET']
+));
 $routes->add('menu_2', new Route(
     '/menu-2',
+    ['_script' => __DIR__ . '/../public/menu_2.php'],
+    [],
+    [],
+    '',
+    [],
+    ['GET']
+));
+$routes->add('admin/menu_2', new Route(
+    '/admin/menu-2',
     ['_script' => __DIR__ . '/../public/menu_2.php'],
     [],
     [],
@@ -81,8 +135,26 @@ $routes->add('menu_3', new Route(
     [],
     ['GET']
 ));
+$routes->add('admin/menu_3', new Route(
+    '/admin/menu-3',
+    ['_script' => __DIR__ . '/../public/menu_3.php'],
+    [],
+    [],
+    '',
+    [],
+    ['GET']
+));
 $routes->add('menu_4', new Route(
     '/menu-4',
+    ['_script' => __DIR__ . '/../public/menu_4.php'],
+    [],
+    [],
+    '',
+    [],
+    ['GET']
+));
+$routes->add('admin/menu_4', new Route(
+    '/admin/menu-4',
     ['_script' => __DIR__ . '/../public/menu_4.php'],
     [],
     [],
@@ -99,8 +171,26 @@ $routes->add('menu_5', new Route(
     [],
     ['GET']
 ));
+$routes->add('admin/menu_5', new Route(
+    '/admin/menu-5',
+    ['_script' => __DIR__ . '/../public/menu_5.php'],
+    [],
+    [],
+    '',
+    [],
+    ['GET']
+));
 $routes->add('menu_6', new Route(
     '/menu-6',
+    ['_script' => __DIR__ . '/../public/menu_6.php'],
+    [],
+    [],
+    '',
+    [],
+    ['GET']
+));
+$routes->add('admin/menu_6', new Route(
+    '/admin/menu-6',
     ['_script' => __DIR__ . '/../public/menu_6.php'],
     [],
     [],
@@ -121,6 +211,15 @@ $routes->add('logout', new Route(
 // Form actions / APIs
 $routes->add('process_login', new Route(
     '/process-login',
+    ['_script' => __DIR__ . '/../public/process_login.php'],
+    [],
+    [],
+    '',
+    [],
+    ['POST']
+));
+$routes->add('admin/process_login', new Route(
+    '/admin/process-login',
     ['_script' => __DIR__ . '/../public/process_login.php'],
     [],
     [],
@@ -258,6 +357,15 @@ $routes->add('verify_otp', new Route(
     [],
     ['GET', 'POST']
 ));
+$routes->add('admin/verify_otp', new Route(
+    '/admin/verify-otp',
+    ['_script' => __DIR__ . '/../public/verify_otp.php'],
+    [],
+    [],
+    '',
+    [],
+    ['GET', 'POST']
+));
 $routes->add('resend_otp', new Route(
     '/resend-otp',
     ['_script' => __DIR__ . '/../public/resend_otp.php'],
@@ -267,8 +375,26 @@ $routes->add('resend_otp', new Route(
     [],
     ['POST']
 ));
+$routes->add('admin/resend_otp', new Route(
+    '/admin/resend-otp',
+    ['_script' => __DIR__ . '/../public/resend_otp.php'],
+    [],
+    [],
+    '',
+    [],
+    ['POST']
+));
 $routes->add('account_settings', new Route(
     '/account/settings',
+    ['_script' => __DIR__ . '/../public/process_account_settings.php'],
+    [],
+    [],
+    '',
+    [],
+    ['POST']
+));
+$routes->add('admin/account_settings', new Route(
+    '/admin/account/settings',
     ['_script' => __DIR__ . '/../public/process_account_settings.php'],
     [],
     [],

@@ -5,7 +5,7 @@ require_once __DIR__ . '/../src/auth.php';
 require_once __DIR__ . '/../src/db.php';
 enforce_auth_for_page(basename(__FILE__));
 if (!isset($_SESSION['auth_user_id'])) {
-    header('Location: ' . route_url(''));
+    header('Location: ' . route_url('admin'));
     exit;
 }
 
