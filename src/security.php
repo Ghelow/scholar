@@ -315,7 +315,11 @@ function require_role(array $allowed): void
         }
     }
     $_SESSION['error'] = 'Insufficient permissions to access this page.';
-    header('Location: ' . route_url('menu-1'));
+    if ($role === 'student') {
+        header('Location: ' . route_url('students/home'));
+    } else {
+        header('Location: ' . route_url('admin/menu-1'));
+    }
     exit;
 }
 
